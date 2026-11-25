@@ -13,7 +13,7 @@ python3 -m http.server 4173 --directory dist
 
 Open http://localhost:4173. Serve over HTTP rather than opening HTML files directly, because articles load a local JSON file. No dependency installation is required. Upload the contents of `dist/` to any static host to deploy.
 
-## Five pages, five supplied palettes
+## 33 pages, five supplied palettes
 
 | Page | Reference | Palette |
 | --- | --- | --- |
@@ -32,7 +32,7 @@ Additional neutral shades support readable text, overlays, and borders. The hex 
 3. Run `python3 scripts/build.py`.
 4. Refresh the preview or upload the updated `dist/` folder.
 
-The builder copies this file verbatim inside the `<head>` of all five pages, before the site JavaScript. It supports native parser execution; no client-side HTML injection is used. Changes become active after rebuilding. Do not edit generated page heads directly.
+The builder copies this file verbatim inside the `<head>` of all 33 pages, including every article and collection, before the site JavaScript. It supports native parser execution; no client-side HTML injection is used. Changes become active after rebuilding. Do not edit generated page heads directly.
 
 ```html
 <script async src="https://your-script-provider.example/tag.js"
@@ -41,27 +41,44 @@ The builder copies this file verbatim inside the `<head>` of all five pages, bef
 
 Use your real provider URL and attributes. No advertising or tracking scripts are active by default. Scripts that modify the visible `<header>` must wait for `DOMContentLoaded` or use `defer`.
 
+## The expanded magazine
+
+- 1 Discover homepage with a cover feature, editor’s picks, section directory, archive, and four category desks.
+- 4 category hubs: Entertainment, Music, Gaming, Fashion. Each contains six articles and topic filters.
+- 24 dedicated article pages with a headline, deck, reading time, byline, hero image, three sections, contents links, save controls, previous/next reading, and related stories.
+- 1 Weekend Edit collection connecting watch, listen, play, and style.
+- 1 searchable archive with category filters, sorting, and pagination.
+- 1 reading-list page with saved stories and individual remove controls.
+- 1 About page explaining the magazine and demo scope.
+
+Articles inherit their category palette. Discover, Search, About, and Reading List use the green palette; Weekend Edit uses the gold palette.
+
 ## Interactions
 
-- Navigation opens five real pages, with the current section underlined.
-- Story images include a “Read story” label. Titles, article buttons, navigation, and saved stories are links.
-- Links have pointer cursors and hover underlines. Buttons have hover feedback; keyboard controls have visible focus outlines.
-- “Coming soon” is a native disabled button with a dashed border, reduced opacity, and an unavailable cursor.
-- Search matches story titles, case-insensitively. Category and search conditions combine. Filters reset when navigating or refreshing; zero results offer Reset filters.
-- Articles open in an accessible modal with a shareable `?story=` URL. Close, Escape, and clicking outside the modal dismiss it.
-- Save/remove stories using the article control. The reading list is shared across all pages in the same browser using local storage. If storage is blocked, it lasts for the current page visit.
-- Article loading failures and unknown story IDs display explicit messages.
-- Layout adapts to mobile, tablet, and desktop. Motion respects reduced-motion preferences.
+- Category links and article images/titles open real standalone pages.
+- Search matches title, description, topic, and category. Search terms are reflected in the URL and restored on refresh.
+- Category filters on Discover/Search and topic filters on category hubs combine with search. Filters and sorting reset on navigation or refresh.
+- Sort by editorial order, title A–Z, or reading time. Discover displays nine results per page; Search displays twelve. Previous/Next controls are disabled at their boundaries. Single-page results hide pagination.
+- Zero results offer Reset filters. Reset clears the query, filter, and sorting.
+- Save/remove buttons on article pages update together. Saved stories persist across pages using browser local storage. The dedicated reading list supports individual removal and a useful empty state.
+- Browser storage failures display a message. Cross-tab storage updates refresh saved counts and lists.
+- Copy link uses the browser clipboard; a selectable link field is displayed if clipboard access fails.
+- Previous/next article links stay within the article’s category. Related cards offer additional reading.
+- Legacy `?story=` URLs from the first edition redirect to their matching article pages.
+- Links use hover underlines and pointer cursors. Buttons have hover/focus feedback. Disabled pagination uses dashed borders, reduced opacity, and an unavailable cursor.
+- No account, ticket sales, subscriptions, audio stream, or fabricated news feed is presented.
 
 ## Advertising demo mounts
 
-Each page includes a collapsed, unfilled `<ins class="cox-ad-unit">` after the latest stories, with a distinct `offbeat_<page>_midfeed` code. Replace it with an actual configured unit code when integrating. Empty mounts show no advertisement label or reserved blank space. These are demonstration mounts, not claims of a configured COAD integration. The source template's deployment instructions and publisher identifiers are not copied into live configuration.
+Each main hub and article page includes a collapsed, unfilled `<ins class="cox-ad-unit">` after the latest stories, with a distinct `offbeat_<page>_midfeed` code. Replace it with an actual configured unit code when integrating. Empty mounts show no advertisement label or reserved blank space. These are demonstration mounts, not claims of a configured COAD integration. The source template's deployment instructions and publisher identifiers are not copied into live configuration.
 
 ## Editing
 
-- `scripts/build.py`: page metadata, editorial text, navigation, and shared markup.
+- `scripts/build.py`: page metadata, navigation, layouts, and shared markup.
+- `content/stories.json`: the 24 editorial articles and their category/topic metadata.
+- `scripts/check.py`: generated link, asset, fragment, heading, content, and shared-head verification.
 - `assets/site.css`: responsive layout, five themes, and interaction styles.
-- `assets/site.js`: search, filters, reading room, and local reading list.
+- `assets/site.js`: search, filters, sorting, pagination, sharing, and the local reading list.
 - `shared/head-scripts.html`: the single source for head scripts across every page.
 - `dist/`: ready-to-serve output; regenerate after editing sources.
 
@@ -71,12 +88,23 @@ All editorial content is illustrative, not live news or verified reporting. Ther
 
 `concert.jpg` and `crowd.jpg` are reused from the supplied demo. See `REFERENCE-CREDITS.md` for the original asset credits (the full reference inventory is preserved, including assets not used here).
 
-Additional Unsplash source images:
+Additional Unsplash source images (saved locally):
 
 - Fashion: https://images.unsplash.com/photo-1483985988355-763728e1935b
 - Cinema: https://images.unsplash.com/photo-1489599849927-2ee91cede3ba
 - Gaming: https://images.unsplash.com/photo-1493711662062-fa541adb3fc8
+- Microphone: https://images.unsplash.com/photo-1516280440614-37939bbacd81
+- Studio: https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4
+- Film: https://images.unsplash.com/photo-1485846234645-a62644f84728
+- Controller: https://images.unsplash.com/photo-1614294149010-950b698f72c0
+- Wardrobe: https://images.unsplash.com/photo-1441986300917-64674bd600d8
 
 ## Verification
 
-The build and JavaScript syntax checks passed. Browser checks covered article open/close, save/remove, category filtering, empty search results, filter reset, disabled controls, and all five pages at a 390px mobile viewport with no horizontal overflow. Desktop visual review used the Discover page. Real third-party script behavior requires the provider's configured script and unit codes.
+```sh
+python3 scripts/build.py
+python3 scripts/check.py
+node --check assets/site.js
+```
+
+All 33 generated pages are checked for local link targets, section anchors, exactly one main heading, unique IDs, and the shared head content. The content check verifies 24 unique articles and six articles in each category. Browser checks cover pagination, search/no results/reset, category/topic filters, title sorting, article navigation, saving across pages, and removal. Mobile layout checks cover the five palettes and the new page layouts. Real third-party script behavior requires a configured provider script and unit codes.
