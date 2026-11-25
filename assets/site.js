@@ -1,5 +1,21 @@
 'use strict';
 (async () => {
+  const menu = document.querySelector('.menu-toggle');
+  const navigation = document.querySelector('#site-nav');
+  menu?.addEventListener('click', () => {
+    const open = menu.getAttribute('aria-expanded') !== 'true';
+    menu.setAttribute('aria-expanded', String(open));
+    menu.textContent = open ? 'Close menu' : 'Menu';
+    navigation.classList.toggle('is-open', open);
+  });
+  navigation?.addEventListener('keydown', event => {
+    if (event.key === 'Escape') {
+      menu.setAttribute('aria-expanded', 'false');
+      menu.textContent = 'Menu';
+      navigation.classList.remove('is-open');
+      menu.focus();
+    }
+  });
   // Old links from the first edition continue to resolve to dedicated articles.
   const legacy = new URLSearchParams(location.search).get('story');
   let stories = [];

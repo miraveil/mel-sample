@@ -39,4 +39,16 @@ for s in stories:
     assert len(s['sections'])>=3
     assert all(section['paragraphs'] for section in s['sections'])
 assert json.loads((OUT/'assets/stories.json').read_text())==stories
+# Verify the reference's three distinct page structures stay in the generated output.
+home=(OUT/'index.html').read_text()
+for marker in ['class="front"', 'class="front-latest"', 'class="print-cols"', 'class="print-split"', 'class="photo-grid"']:
+    assert marker in home, ('Homepage layout missing',marker)
+for category in ['entertainment','music','gaming','fashion']:
+    page=(OUT/f'{category}.html').read_text()
+    for marker in ['class="news-layout"', 'class="news-main"', 'story-list', 'class="sidebar"']:
+        assert marker in page,(category,'Category layout missing',marker)
+for story in stories:
+    page=(OUT/f'story-{story["id"]}.html').read_text()
+    for marker in ['class="article-main"', 'class="article-heading"', 'class="article-figure"', 'class="sidebar"']:
+        assert marker in page,(story['id'],'Article layout missing',marker)
 print('PASS: 33 pages; 24 unique articles; six per category; all local links, assets, fragments, headings, and shared head scripts verified.')

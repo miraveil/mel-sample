@@ -58,9 +58,9 @@ Use your real provider URL and attributes. No advertising or tracking scripts ar
 
 ## The expanded magazine
 
-- 1 Discover homepage with a cover feature, editor’s picks, section directory, archive, and four category desks.
-- 4 category hubs: Entertainment, Music, Gaming, Fashion. Each contains six articles and topic filters.
-- 24 dedicated article pages with a headline, deck, reading time, byline, hero image, three sections, contents links, save controls, previous/next reading, and related stories.
+- 1 Discover homepage with a lead story and latest-story sidebar, three-column Music/Fashion blocks, paired Entertainment/Gaming lists, a photo strip, and an editorial selection.
+- 4 category pages: Entertainment, Music, Gaming, Fashion. Each uses topic filters, six horizontal article rows, and a right sidebar.
+- 24 dedicated article pages with the headline, deck, image, and body in the main reading column; contents, editorial picks, and related stories sit in a right sidebar. Save controls, tags, previous/next reading, and related cards remain available.
 - 1 Weekend Edit collection connecting watch, listen, play, and style.
 - 1 searchable archive with category filters, sorting, and pagination.
 - 1 reading-list page with saved stories and individual remove controls.
@@ -68,19 +68,36 @@ Use your real provider URL and attributes. No advertising or tracking scripts ar
 
 Articles inherit their category palette. Discover, Search, About, and Reading List use the green palette; Weekend Edit uses the gold palette.
 
+## News-style layout
+
+The structure follows the supplied `COAD_Demo/news` reference while retaining Offbeat’s subjects, English content, and five palettes.
+
+| Reference pattern | Offbeat implementation |
+| --- | --- |
+| Utility strip, masthead, category navigation | Compact shared header, search, reading-list control, and mobile menu |
+| Lead image with headline below + latest sidebar | Homepage lead story and seven thumbnail-led article links |
+| Full-width three-column editorial blocks | Music and Fashion sections |
+| Paired sections with compact image/text rows | Entertainment and Gaming |
+| Photo strip + closing reading selection | A different perspective + Editor’s selection |
+| Category title, topic controls, horizontal rows + sidebar | All four category pages and the Search archive |
+| Article content column + right rail | All 24 articles |
+| Footer divided into link groups | Sections, magazine, and personal reading |
+
+The content container is capped at 1180px, matching the reference. Desktop category/article layouts reserve a 320px right column; narrow screens stack the content and sidebar. Editorial selections are curated demo content, not fabricated readership statistics.
+
 ## Interactions
 
 - Category links and article images/titles open real standalone pages.
 - Search matches title, description, topic, and category. Search terms are reflected in the URL and restored on refresh.
-- Category filters on Discover/Search and topic filters on category hubs combine with search. Filters and sorting reset on navigation or refresh.
-- Sort by editorial order, title A–Z, or reading time. Discover displays nine results per page; Search displays twelve. Previous/Next controls are disabled at their boundaries. Single-page results hide pagination.
+- Category filters on Search and topic filters on category pages combine with search. Filters and sorting reset on navigation or refresh.
+- Sort by editorial order, title A–Z, or reading time. Search displays twelve results per page; category pages display their six articles. Previous/Next controls are disabled at their boundaries. Single-page results hide pagination.
 - Zero results offer Reset filters. Reset clears the query, filter, and sorting.
 - Save/remove buttons on article pages update together. Saved stories persist across pages using browser local storage. The dedicated reading list supports individual removal and a useful empty state.
 - Browser storage failures display a message. Cross-tab storage updates refresh saved counts and lists.
 - Copy link uses the browser clipboard; a selectable link field is displayed if clipboard access fails.
 - Previous/next article links stay within the article’s category. Related cards offer additional reading.
 - Legacy `?story=` URLs from the first edition redirect to their matching article pages.
-- Links use hover underlines and pointer cursors. Buttons have hover/focus feedback. Disabled pagination uses dashed borders, reduced opacity, and an unavailable cursor.
+- Links use hover underlines and pointer cursors. Buttons have hover/focus feedback. Disabled pagination uses dashed borders, reduced opacity, and an unavailable cursor. On small screens, Menu expands the category navigation; Escape inside the navigation closes it.
 - No account, ticket sales, subscriptions, audio stream, or fabricated news feed is presented.
 
 ## Advertising demo mounts
@@ -122,4 +139,4 @@ python3 scripts/check.py
 node --check assets/site.js
 ```
 
-All 33 generated pages are checked for local link targets, section anchors, exactly one main heading, unique IDs, and the shared head content. The content check verifies 24 unique articles and six articles in each category. Browser checks cover pagination, search/no results/reset, category/topic filters, title sorting, article navigation, saving across pages, and removal. Mobile layout checks cover the five palettes and the new page layouts. Real third-party script behavior requires a configured provider script and unit codes.
+All 33 generated pages are checked for local link targets, section anchors, exactly one main heading, unique IDs, and the shared head content. The content check verifies 24 unique articles and six articles in each category. Browser checks cover archive pagination, search/no results/reset, category/topic filters, title sorting, article navigation, saving across pages, removal, and the mobile menu. Homepage, category, article, and archive layouts were checked at 320, 390, 768, and 1024px; the remaining palettes and supporting pages were checked at 390px, with no horizontal overflow. Real third-party script behavior requires a configured provider script and unit codes.
