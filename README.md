@@ -1,6 +1,6 @@
 # OFFBEAT — Culture, without the algorithm
 
-An independent, English-language editorial demo inspired by the static, multi-page structure of `COAD_Demo`. Built with HTML, CSS, vanilla JavaScript, and a Python standard-library page builder. This is a separate local repository; it has not been uploaded or published.
+An independent, English-language editorial demo inspired by the static, multi-page structure of `COAD_Demo`. Built with HTML, CSS, vanilla JavaScript, and a Python standard-library page builder. Source repository: https://github.com/miraveil/mel-sample.
 
 ## Start locally
 
@@ -12,6 +12,21 @@ python3 -m http.server 4173 --directory dist
 ```
 
 Open http://localhost:4173. Serve over HTTP rather than opening HTML files directly, because articles load a local JSON file. No dependency installation is required. Upload the contents of `dist/` to any static host to deploy.
+
+## Deploy on Vercel
+
+The repository includes `vercel.json`. Import `miraveil/mel-sample` and keep **Root Directory** at the repository root (leave it empty, or use `.`). The configuration selects the static-site preset, builds and verifies the magazine, then serves `dist/`.
+
+| Setting | Value |
+| --- | --- |
+| Framework Preset | Other |
+| Root Directory | Repository root; not `dist` |
+| Build Command | `python3 scripts/build.py && python3 scripts/check.py` |
+| Output Directory | `dist` |
+
+The build command and output directory are versioned in `vercel.json`. A deployment from `main` rebuilds all pages, so edits to `shared/head-scripts.html` are included automatically after committing and pushing them.
+
+If an older deployment displays `404 NOT_FOUND`, deploy the latest `main` commit containing `vercel.json`. Check that the project is connected to this repository and that Root Directory points to the repository root. If automatic Git deployments are disabled, trigger a new deployment from the latest commit in the Vercel dashboard. Redeploying an older commit does not include this fix.
 
 ## 33 pages, five supplied palettes
 
